@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Data Detective AI Chatbot</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+				font-family: "Poppins", sans-serif;
+			}
+			body {
+				background: radial-gradient(circle at top left, #0f172a, #1e293b);
+				color: #fff;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 100vh;
+			}
+			.container {
+				width: 90%;
+				max-width: 500px;
+				height: 75vh;
+				display: flex;
+				flex-direction: column;
+				background: rgba(255, 255, 255, 0.05);
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				border-radius: 12px;
+				overflow: hidden;
+				box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+			}
+			header {
+				background: rgba(255, 255, 255, 0.08);
+				text-align: center;
+				padding: 12px;
+				font-weight: 600;
+				color: #38bdf8;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+				letter-spacing: 1px;
+			}
+			.chat-box {
+				flex: 1;
+				padding: 16px;
+				overflow-y: auto;
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+			.chat {
+				padding: 10px 14px;
+				border-radius: 10px;
+				max-width: 80%;
+				font-size: 14px;
+				line-height: 1.4;
+				word-wrap: break-word;
+			}
+			.user {
+				align-self: flex-end;
+				background: #38bdf8;
+				color: #000;
+				border-bottom-right-radius: 0;
+			}
+			.bot {
+				align-self: flex-start;
+				background: rgba(255, 255, 255, 0.1);
+				border-bottom-left-radius: 0;
+			}
+			form {
+				display: flex;
+				border-top: 1px solid rgba(255, 255, 255, 0.1);
+			}
+			input {
+				flex: 1;
+				padding: 12px;
+				background: transparent;
+				border: none;
+				color: #fff;
+				outline: none;
+			}
+			button {
+				background: #38bdf8;
+				color: #000;
+				border: none;
+				padding: 12px 16px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: 0.3s;
+			}
+			button:hover {
+				background: #0ea5e9;
+			}
+			::-webkit-scrollbar {
+				width: 6px;
+			}
+			::-webkit-scrollbar-thumb {
+				background: rgba(255, 255, 255, 0.2);
+				border-radius: 3px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header>🕵️‍♀️ Data Detective AI</header>
+			<div class="chat-box" id="chat-box">
+				<div class="chat bot">Greetings, Detective! 🧠 I’m your Data AI partner. Ask me anything!</div>
+			</div>
+			<form id="chat-form">
+				<input type="text" id="user-input" placeholder="Ask your question..." autocomplete="off" required />
+				<button type="submit">Send</button>
+			</form>
+		</div>
+
+		<script>
+			const form = document.getElementById("chat-form");
+			const input = document.getElementById("user-input");
+			const chatBox = document.getElementById("chat-box");
+
+			// 🧠 Mini knowledge base
+			const knowledgeBase = {
+				hello: "Hey there, detective! 👋 Ready to solve some data mysteries?",
+				hi: "Hi! I'm your AI sidekick for data and daily questions.",
+				"who are you": "I'm Data Detective AI — your virtual assistant built to answer your curious questions.",
+				"what is ai": "AI stands for Artificial Intelligence — machines that can mimic human thinking and learning.",
+				"what is data science": "Data Science is the art of turning raw data into insights using analysis, algorithms, and visualization.",
+				"what is machine learning": "Machine Learning is a subset of AI that helps computers learn from data without being explicitly programmed.",
+				"who invented computer": "Charles Babbage is known as the 'Father of the Computer'. 💻",
+				"who is the president of india": "As of 2025, the President of India is Droupadi Murmu 🇮🇳",
+				"tell me a joke": "Why did the computer go to therapy? Because it had a hard drive! 😂",
+				"how are you": "I'm feeling 100% digital and ready to chat!",
+				"what is your name": "I'm called Data Detective — your friendly AI bot.",
+				bye: "Goodbye! Stay curious, detective 🕵️‍♀️✨",
+				"thank you": "You're most welcome! Always happy to help 😊",
+				"what is html": "HTML (HyperText Markup Language) is the standard language for creating webpages.",
+				"what is css": "CSS (Cascading Style Sheets) adds style — colors, fonts, and layout — to HTML webpages.",
+				"what is javascript": "JavaScript makes websites interactive — it’s what gives life to webpages.",
+				default: "Hmm... I don’t know that yet 🤔 but I’m learning every day!",
+			};
+
+			function getBotReply(userMsg) {
+				const msg = userMsg.toLowerCase();
+				for (let key in knowledgeBase) {
+					if (msg.includes(key)) return knowledgeBase[key];
+				}
+				return knowledgeBase.default;
+			}
+
+			function addChat(message, sender) {
+				const div = document.createElement("div");
+				div.classList.add("chat", sender);
+				div.textContent = message;
+				chatBox.appendChild(div);
+				chatBox.scrollTop = chatBox.scrollHeight;
+			}
+
+			form.addEventListener("submit", (e) => {
+				e.preventDefault();
+				const userMsg = input.value.trim();
+				if (!userMsg) return;
+				addChat(userMsg, "user");
+				input.value = "";
+
+				setTimeout(() => {
+					const botReply = getBotReply(userMsg);
+					addChat(botReply, "bot");
+				}, 700);
+			});
+		</script>
+	</body>
+</html>
